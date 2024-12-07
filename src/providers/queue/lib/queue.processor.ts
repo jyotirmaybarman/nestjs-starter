@@ -12,13 +12,13 @@ export class QueueProcessor {
   @Process()
   async process(job: Job) {
     try {
-      this.logger.log('Processing job: #' + job.id);
-      await this.queueJobs[job.data.task](job.data);
-      this.logger.log('Processed job: #' + job.id);
+      this.logger.log('Processing job: # ' + job.data.task);
+      await this.queueJobs[job.data.task](job.data.payload);
+      this.logger.log('Processed job: # ' + job.data.task);
       return true;
     } catch (error) {
       this.logger.error(error);
-      this.logger.log('Failed to process job: #' + job.id);
+      this.logger.error('Failed to process job: # ' + job.data.task);
       return false;
     }
   }
