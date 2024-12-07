@@ -74,13 +74,12 @@ npm run migration:undo
 
 #### QUEUE
 
-Add a new job with the `@Job()` decorator & add processing logic to `src/providers/queue/queue.jobs.ts` with proper type definitions.
+Add a new job with the processing logic to `src/providers/queue/queue.jobs.ts`, the type definitions will be automatically picked up.
 
 ```ts
 export class QueueJobs {
   /** Other Code */
 
-  @Job()
   async newJob(payload: { message: string }): Promise<boolean> {
     /** code related to processing of the job */
     return true;
