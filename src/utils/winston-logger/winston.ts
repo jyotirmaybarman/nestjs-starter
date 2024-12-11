@@ -46,7 +46,7 @@ export const getLogger = () =>{
           format.prettyPrint(),
           format.timestamp({ format: 'YYYY/MM/DD, hh:mm:ss a' }),
           format.ms(),
-          format.printf((info) => {
+          format.printf((info: any) => {
             if(info.level == 'info') info.level = 'log';
 
             const getColorCode = (arg: string) => `\x1b[${arg}`;
