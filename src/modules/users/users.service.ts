@@ -39,11 +39,26 @@ export class UsersService {
     this.queueService.addJob({
       task: 'doSomething',
       payload: {
-        message: "my message"
+        message: 'my message',
       },
     });
     const users = await this.userRepository.find();
     return users;
+  }
+
+  async getUser(id: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!user)
+      throw new NotFoundException({
+        message: 'user does not exist',
+      });
+
+    return user;
   }
 
   async updateUser(id: string, data: UpdateuserDto) {
@@ -79,7 +94,8 @@ export class UsersService {
         message: 'user does not exist',
       });
 
-    this.userRepository.delete(user);
+    await this.userRepository.remove(user);
+
     return user;
   }
 }

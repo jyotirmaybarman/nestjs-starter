@@ -1,0 +1,36 @@
+### Create user
+POST http://localhost:3000/users HTTP/1.1
+content-type: application/json
+
+{
+    "first_name": "User",
+    "last_name": "One",
+    "email": "user@one.com",
+    "password": "Password@123",
+    "password_confirmation": "Password@123"
+} 
+
+### Get all users
+GET http://localhost:3000/users HTTP/1.1
+content-type: application/json
+
+
+### Get One user
+GET http://localhost:3000/users/6fd40dd9-4936-4a40-aae5-15cf0dd10265 HTTP/1.1
+content-type: application/json
+
+
+### Update a user
+PATCH http://localhost:3000/users/6fd40dd9-4936-4a40-aae5-15cf0dd10265 HTTP/1.1
+content-type: application/json
+
+{
+    "first_name": "The UseRR",
+    "last_name": "One1",
+    "email": "user@one1.com"
+} 
+
+### Delete a user
+DELETE http://localhost:3000/users/6fd40dd9-4936-4a40-aae5-15cf0dd10265 HTTP/1.1
+content-type: application/json
+

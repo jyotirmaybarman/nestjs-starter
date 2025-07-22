@@ -8,14 +8,11 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { UpdateuserDto } from './dtos/update-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/modules/users/entities/users.entity';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { WinstonLogger } from 'src/utils/winston-logger/winston-logger';
 
 @ApiTags('users')
@@ -31,13 +28,20 @@ export class UsersController {
   })
   @Get()
   @Serialize(User)
-  @UseGuards(AuthGuard)
-  async getUsers(@CurrentUser() user: any) {
-    this.logger.log({
-      message: 'The current user is\n',
-      data: user,
-    });
+  async getUsers() {
+    this.logger.log('Getting all users');
     return await this.usersService.getUsers();
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Returns just one user',
+    type: [User],
+  })
+  @Get('/:id')
+  @Serialize(User)
+  async getUser(@Param('id') id: string) {
+    return await this.usersService.getUser(id);
   }
 
   @ApiResponse({
@@ -46,7 +50,6 @@ export class UsersController {
   })
   @Post()
   @Serialize(User)
-  @UseGuards(AuthGuard)
   async createUser(@Body() data: CreateUserDto) {
     return await this.usersService.createUser(data);
   }
@@ -54,7 +57,6 @@ export class UsersController {
   @Patch('/:id')
   @ApiResponse({ status: 200, type: User })
   @Serialize(User)
-  @UseGuards(AuthGuard)
   async updateUser(@Param('id') id: string, @Body() data: UpdateuserDto) {
     return await this.usersService.updateUser(id, data);
   }
@@ -62,7 +64,6 @@ export class UsersController {
   @Delete('/:id')
   @Serialize(User)
   @ApiResponse({ status: 200, type: User })
-  @UseGuards(AuthGuard)
   async deleteUser(@Param('id') id: string) {
     return await this.usersService.removeUser(id);
   }
